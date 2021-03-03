@@ -1,7 +1,7 @@
 import {Scene} from "./Scene.js";
 import {GameMap} from "./GameMap.js";
 import {Loader} from "./Loader.js";
-import {EImages} from "./EImages.js";
+import {EImage} from "./Loader.js";
 import {Mouse} from "./Mouse.js";
 
 export class LevelScene extends Scene
@@ -36,8 +36,7 @@ export class LevelScene extends Scene
 			this.aGameMap = new GameMap
 			(
 				this, 
-				20,
-				10, 
+				15, 
 				this.aSeed, 
 				vStartPoint
 			);
@@ -70,8 +69,9 @@ export class LevelScene extends Scene
 	mOnDrawEventHandler(pCanvas, pGraphicContext)
     {
 		super.mOnDrawEventHandler(pCanvas, pGraphicContext);
-		//pGraphicContext.fillStyle = pGraphicContext.createPattern(Loader.Images[EImages.MenuBackGround.Index], "repeat");
-        //pGraphicContext.fillRect(0, 0, pCanvas.width, pCanvas.height);
+
+		pGraphicContext.fillStyle = pGraphicContext.createPattern(Loader.Images[EImage.MenuBackGround.Index], "repeat");
+        pGraphicContext.fillRect(0, 0, pCanvas.width, pCanvas.height);
 	}
 }
 

@@ -1,9 +1,13 @@
+
 export class Automaton
 {
 	constructor(pState)
 	{
 		this.aState = null;
-		this.mChangeState(pState);
+		if(pState)
+		{
+			this.aState = pState;
+		}
 	}
 	
 	get State()
@@ -11,28 +15,16 @@ export class Automaton
 		return this.aState;
 	}
 
-	mUpdate(pObject, pCanvas, pDeltaTime)
+	mHandle(pObject, pCanvas, pDeltaTime)
 	{
 		if(this.aState)
 		{
-			this.aState.mUpdate(this, pObject, pCanvas, pDeltaTime);
+			this.aState.mHandle(this, pObject, pCanvas, pDeltaTime);
 		}
 	}
-
-	mDraw(pObject, pCanvas, pGraphicContext)
-	{
-		if(this.aState)
-		{
-			this.aState.mDraw(this, pObject, pCanvas, pGraphicContext);
-		}
-	}
-
 	mChangeState(pState)
 	{
 		this.aState = pState;
-        if(this.aState)
-		{
-		    this.aState.mReset();	
-		}		
+		this.aState.mReset();
 	}
 }

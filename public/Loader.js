@@ -1,10 +1,23 @@
 "use strict";
 
 import {GameEngine} from "./GameEngine.js";
+import {IntroScene} from "./IntroScene.js";
 import {LevelScene} from "./LevelScene.js";
-import {EImages} from "./EImages.js"
-import {EFonts} from "./EFonts.js"
-import {EBrowsers} from "./EBrowsers.js"
+
+export const EBrowsers = Object.freeze
+(
+    {
+        None: 0,
+        Opera: 1,
+        Firefox: 2,
+        Safari: 4,
+        IE: 8,
+        Edge: 16,
+        Chrome: 32,
+        Chromium: 64,
+        Blink: 128
+    }
+);
 
 export class Loader
 {
@@ -174,6 +187,136 @@ export class Loader
     }
 }
 
+export const EImage = Object.freeze
+(
+    {
+        Logo: 
+        {
+            Index: 0,
+            FileName: "./Images/Logo.png"
+        },
+        Mouse: 
+        {
+            Index: 1,
+            FileName: "./Images/Mouse.png"
+        },
+        MenuBackGround: 
+        {
+            Index: 2,
+            FileName: "./Images/MenuBackGround.png"
+        },
+        WindowBackGround: 
+        {
+            Index: 3,
+            FileName: "./Images/WindowBackGround.png"
+        },
+        North:
+        { 
+            Index: 4,
+            FileName: "./Images/North.png"
+        },
+        East: 
+        { 
+            Index: 5,
+            FileName: "./Images/East.png"
+        },
+        CornerNE: 
+        { 
+            Index: 6,
+            FileName: "./Images/CornerNE.png"
+        },
+        South: 
+        { 
+            Index: 7,
+            FileName: "./Images/South.png"
+        },
+        CenterVertical:  
+        { 
+            Index: 8,
+            FileName: "./Images/CenterVertical.png"
+        },
+        CornerSE: 
+        { 
+            Index: 9,
+            FileName: "./Images/CornerSE.png"
+        },
+        TEast: 
+        { 
+            Index: 10,
+            FileName: "./Images/TEast.png"
+        },
+        West: 
+        { 
+            Index: 11,
+            FileName: "./Images/West.png"
+        },
+        CornerNW: 
+        { 
+            Index: 12,
+            FileName: "./Images/CornerNW.png"
+        },
+        CenterHorizontal: 
+        { 
+            Index: 13,
+            FileName: "./Images/CenterHorizontal.png"
+        },
+        TNorth: 
+        { 
+            Index: 14,
+            FileName: "./Images/TNorth.png"
+        },
+        CornerSW: 
+        { 
+            Index: 15,
+            FileName: "./Images/CornerSW.png"
+        },
+        TWest: 
+        { 
+            Index: 16,
+            FileName: "./Images/TWest.png"
+        },
+        TSouth: 
+        { 
+            Index: 17,
+            FileName: "./Images/TSouth.png"
+        },
+        CenterX: 
+        { 
+            Index: 18,
+            FileName: "./Images/CenterX.png"
+        },
+        ButtonBackGround:
+        {
+            Index: 19,
+            FileName: "./Images/ButtonBackGround.png"
+        },
+        SpriteSheet:
+        {
+            Index: 20,
+            FileName: "./Images/SpriteSheet.png"
+        }
+    }
+);
+
+export const EFonts = Object.freeze
+(
+    {
+        Buffied: 
+        {
+            Index: 0,
+            Name: "Buffied",
+            FileName: "./Fonts/Buffied.ttf"
+        },
+        Celexa:
+        {
+            Index: 1,
+            Name: "Celexa",
+            FileName: "./Fonts/Celexa.ttf"
+        }
+    }
+)
+
+
 window.onload = OnWindowLoad;
 
 function OnWindowLoad()
@@ -188,7 +331,7 @@ function OnWindowLoad()
     
     Loader.mLoadImages
     (
-        Loader.mFromImageEnum(EImages),
+        Loader.mFromImageEnum(EImage),
         ()=>
         {
             Loader.mLoadFonts
@@ -202,11 +345,11 @@ function OnWindowLoad()
                     vCanvas.style.margin = 0;
                     vCanvas.style.padding = 0;
                     vCanvas.style.cursor = "none";
-                    GameEngine.Instance.mStart(vFPS, vBrowser, vCanvas, LevelScene.Instance);
+                    GameEngine.Instance.mStart(vFPS, vBrowser, vCanvas, IntroScene.Instance);
                 }
             )
         }      
     );
 }
 
-export default {Loader}
+export default {Loader};

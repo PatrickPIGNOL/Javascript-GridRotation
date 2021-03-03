@@ -1,8 +1,7 @@
 import {GraphicComponent} from "./GraphicComponent.js";
-import {Loader} from "./Loader.js";
-import {EImages} from "./EImages.js";
+import {Loader, EImage} from "./Loader.js";
 
-export class Mouse extends GraphicComponent
+class Mouse extends GraphicComponent
 {
     static aInstance = null;
     static get Instance()
@@ -24,7 +23,7 @@ export class Mouse extends GraphicComponent
     {
         if(this.aMouse)
         {
-            pGraphicContext.drawImage(Loader.Images[EImages.Mouse.Index], this.aMouse.clientX, this.aMouse.clientY);
+            pGraphicContext.drawImage(Loader.Images[EImage.Mouse.Index], this.aMouse.clientX, this.aMouse.clientY);
         }
     }
     
@@ -33,3 +32,5 @@ export class Mouse extends GraphicComponent
         this.aMouse = pEvent;
     }
 }
+export {Mouse};
+export default {Mouse};
