@@ -8,6 +8,7 @@ export class Scene extends MouseFocusable
         this.Visible = true;
         this.MouseFocusable = true;
     }
+	
     mOnUpdateEventHandler(pCanvas, pDeltaTime)
     {
 		this.X = 0;

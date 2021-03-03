@@ -13,8 +13,13 @@ export class State
 	{
 		throw new Exception("Not Yet Implemented");
 	}	
+	
+	mUpdate(pAutomaton, pObject, pCanvas, pDeltaTime)
+	{	
+		throw new Exception("Not Yet Implemented");
+	}
 
-	mHandle(pAutomaton, pObject, pCanvas, pDeltaTime)
+	mDraw(pAutomaton, pObject, pCanvas, pGraphicContext)
 	{	
 		throw new Exception("Not Yet Implemented");
 	}

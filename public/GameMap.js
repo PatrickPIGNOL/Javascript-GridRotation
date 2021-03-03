@@ -12,30 +12,9 @@ import {GameMapFadeInState} from "./GameMapFadeInState.js";
 import {GameMapLaunchDiceState} from "./GameMapLaunchDiceState.js"
 import {GameMapWalkState} from "./GameMapWalkState.js"
 import {PlayerWalkState} from "./PlayerWalkState.js"
-export const EDirrections = Object.freeze
-(
-	{
-		Up: 1,
-		Down: 2,
-		Left: 4,
-		Right: 8
-	}
-);
-
-export const EGameStates = Object.freeze(
-	{
-		FadeIn: 1,
-		WaitLaunchDice: 2,
-		LaunchDice: 3,
-		FindPath:4,
-		ChooseDirrection: 5,
-		Walk: 6,
-		Collect: 7,
-		Finish: 8,
-		KO: 9,
-		FadeOut: 10
-	}
-);
+import {EDirrections} from "./EDirrections.js"
+import {EGameMapStateType} from "./EGameMapStateType.js"
+import {EGameMapNewMapState} from "./GameMapNewMapState.js"
 
 export class GameMap extends MouseFocusable
 {
@@ -46,19 +25,14 @@ export class GameMap extends MouseFocusable
 			pParent, 
 			0,
 			0,
-			pMapSize * 32 + 128, 
+			pMapSize * 32, 
 			pMapSize * 32
 		);
 		this.aPercentages = 
 		{
-			Dig: 100,
-			Coin: 5,
-			Enemy: 5,
-			Web: 5,
-			Heart: 1.5,
-			Teleport: 1.5
+			Dig: 100
 		};
-		this.aAutomaton = new Automaton(GameMapFadeInState.Instance);
+		this.aAutomaton = new Automaton(GameMapNewMapState.Instance);
 		this.Visible = false;
 		this.aChoosedDirrection = 0;
 		this.aLaunchCount = 0;
