@@ -80,7 +80,7 @@ class IntroScene extends Scene
                 if(this.aTimer > 3000)
                 {
                     this.aTimer = 0;
-                    GameEngine.Instance.mChangeScene(MainMenuScene.Instance);
+                    GameEngine.Instance.mChangeScene(LevelScene.Instance);
                 }
             }break;
         }
@@ -118,7 +118,6 @@ class IntroScene extends Scene
     
     mOnMouseMoveEventHandler(pEvent)
     {
-        //super.mOnMouseMoveEventHandler(pEvent);
         this.aMouse = pEvent;
     }
 }
