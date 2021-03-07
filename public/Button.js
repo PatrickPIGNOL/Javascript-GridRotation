@@ -2,15 +2,6 @@ import {GraphicComponent} from "./GraphicComponent.js";
 import {Loader, EImage, EFonts} from "./Loader.js";
 import {MouseFocusable} from "./MouseFocusable.js";
 
-/*
-const EButtonStates = Object.freeze
-(
-    {
-        Object:t       
-    }
-)
-*/
-
 export class Button extends MouseFocusable
 {
     constructor(pParent, pX, pY, pWidth, pHeight, pText)

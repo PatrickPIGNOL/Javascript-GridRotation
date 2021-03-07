@@ -1,8 +1,8 @@
 
-import {EventProvider} from "./EventProvider.js";
+import {Component} from "./Component.js";
 import {EBrowsers} from "./Loader.js";
 
-export class GameEngine extends EventProvider
+export class GameEngine extends Component
 {
     static aInstance = null;
     static get Instance()

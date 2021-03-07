@@ -1,48 +1,7 @@
 import {GraphicComponent} from "./GraphicComponent.js";
-import {DragDropEvent} from "./DragDropEvent.js"
+import {DragDropEvent} from "./DragDropEvent.js";
 
-const MouseButtons = Object.freeze
-(
-    {
-        None:
-        {
-            Mask: 65535,
-            Value: 0
-        },
-        Button1:
-        {
-            Mask: 1,
-            Value: 1
-        },
-        Button2:
-        {
-            Mask: 2,
-            Value: 2
-        },
-        Button3:
-        {
-            Mask: 4,
-            Value: 4
-        },
-        Button4:
-        {
-            Mask: 8,
-            Value: 8
-        },
-        Button5:
-        {
-            Mask: 16,
-            Value: 16
-        },
-        Button6:
-        {
-            Mask: 32,
-            Value: 32
-        }
-    }
-);
-
-class MouseFocusable extends GraphicComponent
+export class MouseFocusable extends GraphicComponent
 {
     constructor(pParent, pX, pY, pWidth, pHeight)
     {
@@ -295,5 +254,4 @@ class MouseFocusable extends GraphicComponent
     }
 }
 
-export {MouseFocusable};
 export default {MouseFocusable};

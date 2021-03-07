@@ -1,6 +1,6 @@
 
-import {MouseFocusable} from "./MouseFocusable.js";
-export class Scene extends MouseFocusable
+import {KeyboardFocusable} from "./KeyboardFocusable.js";
+export class Scene extends KeyboardFocusable
 {
     constructor()
     {
@@ -8,7 +8,6 @@ export class Scene extends MouseFocusable
         this.Visible = true;
         this.MouseFocusable = true;
     }
-	
     mOnUpdateEventHandler(pCanvas, pDeltaTime)
     {
 		this.X = 0;

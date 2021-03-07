@@ -22,6 +22,7 @@ export class Automaton
 			this.aState.mHandle(this, pObject, pCanvas, pDeltaTime);
 		}
 	}
+	
 	mChangeState(pState)
 	{
 		this.aState = pState;

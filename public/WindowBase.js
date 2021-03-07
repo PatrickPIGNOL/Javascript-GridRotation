@@ -1,7 +1,7 @@
 import {MouseFocusable} from "./MouseFocusable.js";
-import {Loader, EImage} from "./Loader.js";
+//import {Loader, EImage} from "./Loader.js";
 
-const WindowState = Object.freeze
+export const WindowState = Object.freeze
 (
     {
         Opening: 
@@ -17,7 +17,7 @@ const WindowState = Object.freeze
     }
 );
 
-class WindowBase extends MouseFocusable
+export class WindowBase extends MouseFocusable
 {
     constructor(pParent, pX, pY, pWidth, pHeight)
     {
@@ -127,6 +127,4 @@ class WindowBase extends MouseFocusable
     }
 }
 
-export { WindowState };
-export { WindowBase };
 export default { WindowBase };
