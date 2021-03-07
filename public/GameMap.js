@@ -1,15 +1,9 @@
 import {MouseFocusable} from "./MouseFocusable.js";
 import {GameEngine} from "./GameEngine.js";
-import {Loader} from "./Loader.js";
-import {EImage} from "./Loader.js";
-import {Player, EPlayerState, EPlayerDirrections} from "./Player.js";
-import {Item} from "./Item.js";
+import {Player} from "./Player.js";
 import {EItemType} from "./Item.js";
 import {ETileSheetIndex} from "./ETileSheetIndex.js";
 import {Automaton} from "./Automaton.js";
-import {GameMapLaunchDiceState} from "./GameMapLaunchDiceState.js"
-import {GameMapWalkState} from "./GameMapWalkState.js"
-import {PlayerWalkState} from "./PlayerWalkState.js"
 import {EDirrections} from "./EDirrections.js"
 import {GameMapNewMapState} from "./GameMapNewMapState.js"
 
@@ -25,7 +19,8 @@ export class GameMap extends MouseFocusable
 			pWidth * 32, 
 			pHeight * 32
 		);
-		this.aSise = {
+		this.aMap = {
+			Map: new Array(),
 			Width: pWidth,
 			Height: pHeight
 		}
@@ -43,7 +38,6 @@ export class GameMap extends MouseFocusable
 		this.aAlpha;
 		this.aRandom;
 		this.aDigCells = new Array();
-		this.aItems = new Array();
 		this.mOnResizeEvent();
 		this.aCounts = 
 		{
@@ -51,16 +45,15 @@ export class GameMap extends MouseFocusable
 		};
 		this.aMaxCounts =
 		{
-			Dig: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Dig / 100)
+			Dig: Math.floor((this.aMap.Width - 2) * (this.aSize.Height - 2) * this.aPercentages.Dig / 100)
 		};
 		this.aMap = new Array();
 		this.aRandom = null;
-		this.mNewLevel(pSeed, pStartPoint);
 	}
 	
-	get Size()
+	get Map()
 	{
-		return this.aSize;
+		return this.aMap;
 	}
 
 	get Percentages()
@@ -105,22 +98,8 @@ export class GameMap extends MouseFocusable
 
 		this.aMaxCounts =
 		{
-			Dig: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Dig / 100),
-			Coin: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Coin / 100),
-			Chest: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Chest / 100),
-			Enemy: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Enemy / 100),
-			Tank: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Tank / 100),
-			Web: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Web / 100),
-			Heart: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Heart / 100),
-			Hearts: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Hearts / 100),
-			Teleport: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Hearts / 100)
+			Dig: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Dig / 100)
 		};
-		for(let vIndex = this.aItems.length - 1; vIndex >= 0; vIndex--)
-		{
-			const vItemFound = this.aItems[vIndex];
-			this.mRemoveOnAllEventListener(vItemFound);
-			this.aItems.splice(vIndex, 1);
-		}
 
 		this.aMap = new Array();
 		
@@ -165,27 +144,6 @@ export class GameMap extends MouseFocusable
 			this.mRemoveComponent(this.aPlayer);
 			this.mAddComponent(this.aPlayer);
 			this.mAddOnAllEventListener(this.aPlayer);
-		}
-	}
-
-	mNewItems(pMaxCount, pItemType)
-	{
-		let vItems = 0;
-		while(vItems < pMaxCount)
-		{
-			let vIndex = Math.floor(this.aRandom() * this.aDigCells.length);
-			let vCell = this.aDigCells[vIndex];
-			switch(pItemType)
-			{
-				default:
-				{
-					let vItem = new Item(this, vCell.X, vCell.Y, pItemType, Math.floor(this.aRandom() * 6 + 1));
-					this.mAddOnAllEventListener(vItem);
-					this.aItems.push(vItem);
-				}break;
-			}
-			this.aDigCells.splice(vIndex, 1);
-			vItems++;
 		}
 	}
 
@@ -282,418 +240,16 @@ export class GameMap extends MouseFocusable
 		this.aMap[pPoint.Y][pPoint.X] = ETileSheetIndex.Floor;
 	}
 
-	mPlayDice()
-	{
-		this.aAutomaton.mChangeState(GameMapLaunchDiceState.Instance);		
-		this.aButtonDice.Visible = false;
-		this.aLaunchCount = 0;
-	}
-
-	mChooseDirrection(pDirrection)
-	{
-		this.aChoosedDirrection = pDirrection;
-		this.aAutomaton.mChangeState(GameMapWalkState.Instance);
-		this.aPlayer.aAutomaton.mChangeState(PlayerWalkState.Instance);
-		this.aButtonUp.Visible = false;
-		this.aButtonUpRight.Visible = false;
-		this.aButtonRight.Visible = false;
-		this.aButtonDownRight.Visible = false;
-		this.aButtonDown.Visible = false;
-		this.aButtonDownLeft.Visible = false;
-		this.aButtonLeft.Visible = false;
-		this.aButtonUpLeft.Visible = false;			
-		switch(this.aChoosedDirrection)
-		{
-			case EDirrections.Up:
-			{
-				this.aPlayer.Dirrection = EPlayerDirrections.N;
-				this.aPlayer.Path = {
-					Start: {
-						X: this.aPlayer.X,
-						Y: this.aPlayer.Y
-					},
-					End: {
-						X: this.aPaths.Up.X,
-						Y: this.aPaths.Up.Y
-					},
-					Steps: {
-						X: 0,
-						Y: -1
-					},
-					Dirrection: EDirrections.Up
-				}
-			}break;
-			case EDirrections.Up + EDirrections.Right:
-			{
-				this.aPlayer.Dirrection = EPlayerDirrections.N;
-				this.aPlayer.Path = {
-					Start: {
-						X: this.aPlayer.X,
-						Y: this.aPlayer.Y
-					},
-					End: {
-						X: this.aPaths.UpRight.X,
-						Y: this.aPaths.UpRight.Y
-					},
-					Steps: {
-						X: +1,
-						Y: -1
-					},
-					Dirrection: EDirrections.Up + EDirrections.Right
-				}
-			}break;
-			case EDirrections.Right:
-			{
-				this.aPlayer.Dirrection = EPlayerDirrections.E;
-				this.aPlayer.Path = {
-					Start: {
-						X: this.aPlayer.X,
-						Y: this.aPlayer.Y
-					},
-					End: {
-						X: this.aPaths.Right.X,
-						Y: this.aPaths.Right.Y
-					},
-					Steps: {
-						X: +1,
-						Y: 0
-					},
-					Dirrection: EDirrections.Right
-				}
-			}break;
-			case EDirrections.Down + EDirrections.Right:
-			{
-				this.aPlayer.Dirrection = EPlayerDirrections.E;
-				this.aPlayer.Path = {
-					Start: {
-						X: this.aPlayer.X,
-						Y: this.aPlayer.Y
-					},
-					End: {
-						X: this.aPaths.DownRight.X,
-						Y: this.aPaths.DownRight.Y,
-					},
-					Steps: {
-						X: +1,
-						Y: +1
-					},
-					Dirrection: EDirrections.Down + EDirrections.Right
-				}
-			}break;
-			case EDirrections.Down:
-			{
-				this.aPlayer.Dirrection = EPlayerDirrections.S;
-				this.aPlayer.Path = {
-					Start: {
-						X: this.aPlayer.X,
-						Y: this.aPlayer.Y
-					},
-					End: {
-						X: this.aPaths.Down.X,
-						Y: this.aPaths.Down.Y,
-					},
-					Steps: {
-						X: 0,
-						Y: +1
-					},
-					Dirrection: EDirrections.Down
-				}
-			}break;
-			case EDirrections.Down + EDirrections.Left:
-			{
-				this.aPlayer.Dirrection = EPlayerDirrections.W;
-				this.aPlayer.Path = {
-					Start: {
-						X: this.aPlayer.X,
-						Y: this.aPlayer.Y
-					},
-					End: {
-						X: this.aPaths.DownLeft.X,
-						Y: this.aPaths.DownLeft.Y,
-					},
-					Steps: {
-						X: -1,
-						Y: +1
-					},
-					Dirrection: EDirrections.Down + EDirrections.Left
-				}
-			}break;
-			case EDirrections.Left:
-			{
-				this.aPlayer.Dirrection = EPlayerDirrections.W;
-				this.aPlayer.Path = {
-					Start: {
-						X: this.aPlayer.X,
-						Y: this.aPlayer.Y
-					},
-					End: {
-						X: this.aPaths.Left.X,
-						Y: this.aPaths.Left.Y,
-					},
-					Steps: {
-						X: -1,
-						Y: 0
-					},
-					Dirrection: EDirrections.Left
-				}
-			}break;
-			case EDirrections.Up + EDirrections.Left:
-			{
-				this.aPlayer.Dirrection = EPlayerDirrections.N;
-				this.aPlayer.Path = {
-					Start: {
-						X: this.aPlayer.X,
-						Y: this.aPlayer.Y
-					},
-					End: {
-						X: this.aPaths.UpLeft.X,
-						Y: this.aPaths.UpLeft.Y,
-					},
-					Steps: {
-						X: -1,
-						Y: -1
-					},
-					Dirrection: EDirrections.Up + EDirrections.Left
-				}
-			}break;
-		}
-	}
-
 	mOnUpdateEventHandler(pCanvas, pDeltaTime)
 	{
-		this.aAutomaton.mHandle(this, pCanvas, pDeltaTime);
+		this.aAutomaton.mUpdate(this, pCanvas, pDeltaTime);
 	}
 
 	mOnDrawEventHandler(pCanvas, pGraphicContext)
 	{
 		super.mOnDrawEventHandler(pCanvas, pGraphicContext);
-		pGraphicContext.globalAlpha = this.aAlpha;
-		for(let vYIndex = 0; vYIndex < this.aMapSize; vYIndex++)
-		{		
-			for(let vXIndex = 0; vXIndex < this.aMapSize; vXIndex++)
-			{
-				pGraphicContext.drawImage
-				(
-					Loader.Images[EImage.SpriteSheet.Index],
-					this.aMap[vYIndex][vXIndex].X * this.aMap[vYIndex][vXIndex].Width,
-					this.aMap[vYIndex][vXIndex].Y * this.aMap[vYIndex][vXIndex].Height,
-					this.aMap[vYIndex][vXIndex].Width,
-					this.aMap[vYIndex][vXIndex].Height,
-					Math.floor(this.AbsoluteX + vXIndex * 32),
-					Math.floor(this.AbsoluteY + vYIndex * 32),
-					32,
-					32
-				);
-			}
-		}
-
-		pGraphicContext.fillStyle = pGraphicContext.createPattern(Loader.Images[EImage.WindowBackGround.Index], "repeat");
-
-        pGraphicContext.fillRect
-		(
-			Math.floor(this.AbsoluteX + this.aMapSize * 32), 
-			this.AbsoluteY, 
-			128, 
-			Math.floor(this.aMapSize * 32)
-		);
-
-		pGraphicContext.drawImage
-		(
-			Loader.Images[EImage.SpriteSheet.Index],
-			ETileSheetIndex.Heart.X * ETileSheetIndex.Heart.Width,
-			ETileSheetIndex.Heart.Y * ETileSheetIndex.Heart.Height,
-			ETileSheetIndex.Heart.Width,
-			ETileSheetIndex.Heart.Height,
-			Math.floor(this.AbsoluteX + this.aMapSize * 32 + 5),
-			this.AbsoluteY + 5,
-			32,			
-			32
-		)
-
-		pGraphicContext.font = '16px serif';
-		pGraphicContext.fillStyle = "#FFFFFF";
-		let vTextMetrics = pGraphicContext.measureText(this.aPlayer.Life);
-		pGraphicContext.fillText
-		(
-			this.aPlayer.Life, 
-			Math.floor(this.AbsoluteX + this.aMapSize * 32 + ((32 - vTextMetrics.width)/2) + 5), 
-			this.AbsoluteY + 5 + 20
-		);
-
-		pGraphicContext.drawImage
-		(
-			Loader.Images[EImage.SpriteSheet.Index],
-			ETileSheetIndex.Coin.X * ETileSheetIndex.Coin.Width,
-			ETileSheetIndex.Coin.Y * ETileSheetIndex.Coin.Height,
-			ETileSheetIndex.Coin.Width,
-			ETileSheetIndex.Coin.Height,
-		
-			Math.floor(this.AbsoluteX + this.aMapSize * 32 + 5),
-			this.AbsoluteY + 5 + 32,
-			32,			
-			32
-		);
-
-		pGraphicContext.font = '16px serif';
-		pGraphicContext.fillStyle = "#FFFFFF";
-		vTextMetrics = pGraphicContext.measureText(this.aPlayer.Coins);
-		pGraphicContext.fillText
-		(
-			this.aPlayer.Coins, 
-			Math.floor(this.AbsoluteX + this.aMapSize * 32 + ((32 - vTextMetrics.width)/2) + 5), 
-			this.AbsoluteY + 5 + 20 + 32
-		);
-		
-		if(this.aAutomaton.State.Type === EGameStates.ChooseDirrection)
-		{
-			for(let vIndex = 1; vIndex <= this.aPaths.Max; vIndex ++)
-			{
-				if(vIndex <= this.aPaths.Up.Count)
-				{
-					if(this.aPaths.Up.Count === this.aPaths.Max)
-					{
-						pGraphicContext.fillStyle = "rgba(0,255,0,0.25)";
-					}
-					else
-					{
-						pGraphicContext.fillStyle = "rgba(255,0,0,0.25)";
-					}
-					pGraphicContext.fillRect
-					(
-						Math.floor(this.AbsoluteX + this.aPlayer.X * 32),
-						Math.floor(this.AbsoluteY + (this.aPlayer.Y - vIndex) * 32),
-						32, 
-						32
-					);
-				}
-				if(vIndex <= this.aPaths.UpRight.Count)
-				{
-					if(this.aPaths.UpRight.Count === this.aPaths.Max)
-					{
-						pGraphicContext.fillStyle = "rgba(0,255,0,0.25)";
-					}
-					else
-					{
-						pGraphicContext.fillStyle = "rgba(255,0,0,0.25)";
-					}
-					pGraphicContext.fillRect
-					(
-						Math.floor(this.AbsoluteX + (this.aPlayer.X + vIndex) * 32), 
-						Math.floor(this.AbsoluteY + (this.aPlayer.Y - vIndex) * 32), 
-						32, 
-						32
-					);
-				}
-				if(vIndex <= this.aPaths.Right.Count)
-				{
-					if(this.aPaths.Right.Count === this.aPaths.Max)
-					{
-						pGraphicContext.fillStyle = "rgba(0,255,0,0.25)";
-					}
-					else
-					{
-						pGraphicContext.fillStyle = "rgba(255,0,0,0.25)";
-					}
-					pGraphicContext.fillRect
-					(
-						Math.floor(this.AbsoluteX + (this.aPlayer.X + vIndex) * 32), 
-						Math.floor(this.AbsoluteY + this.aPlayer.Y * 32), 
-						32, 
-						32
-					)
-				}
-				if(vIndex <= this.aPaths.DownRight.Count)
-				{
-					if(this.aPaths.DownRight.Count === this.aPaths.Max)
-					{
-						pGraphicContext.fillStyle = "rgba(0,255,0,0.25)";
-					}
-					else
-					{
-						pGraphicContext.fillStyle = "rgba(255,0,0,0.25)";
-					}
-					pGraphicContext.fillRect
-					(
-						Math.floor(this.AbsoluteX + (this.aPlayer.X + vIndex) * 32), 
-						Math.floor(this.AbsoluteY + (this.aPlayer.Y + vIndex) * 32), 
-						32, 
-						32
-					);
-				}
-				if(vIndex <= this.aPaths.Down.Count)
-				{
-					if(this.aPaths.Down.Count === this.aPaths.Max)
-					{
-						pGraphicContext.fillStyle = "rgba(0,255,0,0.25)";
-					}
-					else
-					{
-						pGraphicContext.fillStyle = "rgba(255,0,0,0.25)";
-					}
-					pGraphicContext.fillRect
-					(
-						Math.floor(this.AbsoluteX + this.aPlayer.X * 32), 
-						Math.floor(this.AbsoluteY + (this.aPlayer.Y + vIndex) * 32), 
-						32, 
-						32
-					);
-				}
-				if(vIndex <= this.aPaths.DownLeft.Count)
-				{
-					if(this.aPaths.DownLeft.Count === this.aPaths.Max)
-					{
-						pGraphicContext.fillStyle = "rgba(0,255,0,0.25)";
-					}
-					else
-					{
-						pGraphicContext.fillStyle = "rgba(255,0,0,0.25)";
-					}
-					pGraphicContext.fillRect
-					(
-						Math.floor(this.AbsoluteX + (this.aPlayer.X - vIndex) * 32), 
-						Math.floor(this.AbsoluteY + (this.aPlayer.Y + vIndex) * 32), 
-						32,
-						32
-					);
-				}
-				if(vIndex <= this.aPaths.Left.Count)
-				{
-					if(this.aPaths.Left.Count === this.aPaths.Max)
-					{
-						pGraphicContext.fillStyle = "rgba(0,255,0,0.25)";
-					}
-					else
-					{
-						pGraphicContext.fillStyle = "rgba(255,0,0,0.25)";
-					}
-					pGraphicContext.fillRect
-					(
-						Math.floor(this.AbsoluteX + (this.aPlayer.X - vIndex) * 32), 
-						Math.floor(this.AbsoluteY + this.aPlayer.Y * 32), 
-						32, 
-						32
-					)
-				}
-				if(vIndex <= this.aPaths.UpLeft.Count)
-				{
-					if(this.aPaths.UpLeft.Count === this.aPaths.Max)
-					{
-						pGraphicContext.fillStyle = "rgba(0,255,0,0.25)";
-					}
-					else
-					{
-						pGraphicContext.fillStyle = "rgba(255,0,0,0.25)";
-					}
-					pGraphicContext.fillRect
-					(
-						Math.floor(this.AbsoluteX + (this.aPlayer.X - vIndex) * 32), 
-						Math.floor(this.AbsoluteY + (this.aPlayer.Y - vIndex) * 32),
-						32, 
-						32
-					)
-				}
-			}
-		}
+		pGraphicContext.globalAlpha = this.aAlpha;		
+		this.aAutomaton.mDraw(this, pCanvas, pGraphicContext);
 		pGraphicContext.globalAlpha = 1;
 	}
 };

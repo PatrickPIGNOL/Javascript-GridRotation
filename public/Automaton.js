@@ -15,11 +15,19 @@ export class Automaton
 		return this.aState;
 	}
 
-	mHandle(pObject, pCanvas, pDeltaTime)
+	mUpdate(pObject, pCanvas, pDeltaTime)
 	{
 		if(this.aState)
 		{
 			this.aState.mHandle(this, pObject, pCanvas, pDeltaTime);
+		}
+	}
+
+	mDraw(pObject, pCanvas, pGraphicContext)
+	{
+		if(this.aState)
+		{
+			this.aState.mHandle(this, pObject, pCanvas, pGraphicContext);
 		}
 	}
 	
