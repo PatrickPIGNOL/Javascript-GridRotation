@@ -36,7 +36,8 @@ export class LevelScene extends Scene
 			this.aGameMap = new GameMap
 			(
 				this, 
-				15, 
+				20,
+				10, 
 				this.aSeed, 
 				vStartPoint
 			);

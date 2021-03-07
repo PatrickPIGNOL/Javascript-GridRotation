@@ -6,28 +6,29 @@ import {Player, EPlayerState, EPlayerDirrections} from "./Player.js";
 import {Item} from "./Item.js";
 import {EItemType} from "./Item.js";
 import {ETileSheetIndex} from "./ETileSheetIndex.js";
-import {GameMapButton} from "./GameMapButton.js";
 import {Automaton} from "./Automaton.js";
-import {GameMapFadeInState} from "./GameMapFadeInState.js";
 import {GameMapLaunchDiceState} from "./GameMapLaunchDiceState.js"
 import {GameMapWalkState} from "./GameMapWalkState.js"
 import {PlayerWalkState} from "./PlayerWalkState.js"
 import {EDirrections} from "./EDirrections.js"
-import {EGameMapStateType} from "./EGameMapStateType.js"
-import {EGameMapNewMapState} from "./GameMapNewMapState.js"
+import {GameMapNewMapState} from "./GameMapNewMapState.js"
 
 export class GameMap extends MouseFocusable
 {
-	constructor(pParent, pMapSize, pSeed,  pStartPoint)
+	constructor(pParent, pWidth, pHeight, pSeed,  pStartPoint)
     {
 		super
 		(
 			pParent, 
 			0,
 			0,
-			pMapSize * 32, 
-			pMapSize * 32
+			pWidth * 32, 
+			pHeight * 32
 		);
+		this.aSise = {
+			Width: pWidth,
+			Height: pHeight
+		}
 		this.aPercentages = 
 		{
 			Dig: 100
@@ -43,174 +44,23 @@ export class GameMap extends MouseFocusable
 		this.aRandom;
 		this.aDigCells = new Array();
 		this.aItems = new Array();
-		this.aMapSize = 15;
-		this.aButtonUp = new GameMapButton
-		(
-			this, 
-			(this.aMapSize * 32) + 10 + 5 + 32, 
-			5 + 96, 
-			32, 
-			32, 
-			Loader.Images[EImage.SpriteSheet.Index], 
-			ETileSheetIndex.Up,
-			true
-		);
-		this.aButtonUp.mOnClickEventHandler = function(pEvent)
-		{
-			this.Parent.mChooseDirrection(EDirrections.Up);
-		};
-		this.aButtonUpRight = new GameMapButton
-		(
-			this, 
-			(this.aMapSize * 32) + 15 + 5 + 64, 
-			5 + 96, 
-			32, 
-			32, 
-			Loader.Images[EImage.SpriteSheet.Index], 
-			ETileSheetIndex.UpRight,
-			true
-		);
-		this.aButtonUpRight.mOnClickEventHandler = function(pEvent)
-		{
-			this.Parent.mChooseDirrection(EDirrections.Up + EDirrections.Right);
-		};
-		this.aButtonRight = new GameMapButton
-		(
-			this, 
-			(this.aMapSize * 32) + 15 + 5 + 64, 
-			10 + 128, 
-			32, 
-			32, 
-			Loader.Images[EImage.SpriteSheet.Index], 
-			ETileSheetIndex.Right,
-			true
-		);
-		this.aButtonRight.mOnClickEventHandler = function(pEvent)
-		{
-			this.Parent.mChooseDirrection(EDirrections.Right);
-		};
-		this.aButtonDownRight = new GameMapButton
-		(
-			this, 
-			(this.aMapSize * 32) + 15 + 5 + 64, 
-			15 + 160, 
-			32, 
-			32, 
-			Loader.Images[EImage.SpriteSheet.Index], 
-			ETileSheetIndex.DownRight,
-			true
-		);
-		this.aButtonDownRight.mOnClickEventHandler = function(pEvent)
-		{
-			this.Parent.mChooseDirrection(EDirrections.Right + EDirrections.Down);
-		};
-		this.aButtonDown = new GameMapButton
-		(
-			this, 
-			(this.aMapSize * 32) + 10 + 5 + 32, 
-			15 + 160, 
-			32, 
-			32, 
-			Loader.Images[EImage.SpriteSheet.Index], 
-			ETileSheetIndex.Down,
-			true
-		);
-		this.aButtonDown.mOnClickEventHandler = function(pEvent)
-		{
-			this.Parent.mChooseDirrection(EDirrections.Down);
-		};
-		this.aButtonDownLeft = new GameMapButton
-		(
-			this, 
-			(this.aMapSize * 32) + 5 + 5, 
-			15 + 160, 
-			32, 
-			32, 
-			Loader.Images[EImage.SpriteSheet.Index], 
-			ETileSheetIndex.DownLeft,
-			true
-		);
-		this.aButtonDownLeft.mOnClickEventHandler = function(pEvent)
-		{
-			this.Parent.mChooseDirrection(EDirrections.Down + EDirrections.Left);
-		};
-		this.aButtonLeft = new GameMapButton
-		(
-			this, 
-			(this.aMapSize * 32) + 5 + 5, 
-			10 + 128, 
-			32, 
-			32, 
-			Loader.Images[EImage.SpriteSheet.Index], 
-			ETileSheetIndex.Left,
-			true
-		);
-		this.aButtonLeft.mOnClickEventHandler = function(pEvent)
-		{
-			this.Parent.mChooseDirrection(EDirrections.Left);
-		};
-		this.aButtonUpLeft = new GameMapButton
-		(
-			this, 
-			(this.aMapSize * 32) + 5 + 5, 
-			5 + 96, 
-			32, 
-			32, 
-			Loader.Images[EImage.SpriteSheet.Index], 
-			ETileSheetIndex.UpLeft,
-			true
-		);
-		this.aButtonUpLeft.mOnClickEventHandler = function(pEvent)
-		{
-			this.Parent.mChooseDirrection(EDirrections.Left + EDirrections.Up);
-		};
-		this.aButtonDice = new GameMapButton
-		(
-			this, 
-			(this.aMapSize * 32) + 5 + 5, 
-			20 + 224, 
-			96, 
-			96, 
-			Loader.Images[EImage.SpriteSheet.Index], 
-			ETileSheetIndex.Dice6,
-			false
-		);
-		this.aButtonDice.mOnClickEventHandler = function(pEvent)
-		{
-			this.Parent.mPlayDice();
-		};
 		this.mOnResizeEvent();
-		if(pMapSize)
-		{
-			this.aMapSize = pMapSize;
-		}
 		this.aCounts = 
 		{
 			Dig: 0,
-			Coin: 0,
-			Chest: 0,
-			Enemy: 0,
-			Tank: 0,
-			Web: 0,
-			Heart: 0,
-			Hearts: 0,
-			Teleport: 0
 		};
 		this.aMaxCounts =
 		{
-			Dig: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Dig / 100),
-			Coin: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Coin / 100),
-			Chest: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Chest / 100),
-			Enemy: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Enemy / 100),
-			Tank: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Tank / 100),
-			Web: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Web / 100),
-			Heart: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Heart / 100),
-			Hearts: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Hearts / 100),
-			Teleport: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Hearts / 100)
+			Dig: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Dig / 100)
 		};
 		this.aMap = new Array();
 		this.aRandom = null;
 		this.mNewLevel(pSeed, pStartPoint);
+	}
+	
+	get Size()
+	{
+		return this.aSize;
 	}
 
 	get Percentages()
@@ -220,347 +70,8 @@ export class GameMap extends MouseFocusable
 
 	mOnResizeEventHandler()
 	{
-		this.X = (GameEngine.Instance.Canvas.width  - (this.aMapSize * 32)) / 2 - 64;
-		this.Y = (GameEngine.Instance.Canvas.height - (this.aMapSize * 32)) / 2;
-		this.aButtonUp.X = (this.aMapSize * 32) + 10 + 5 + 32;
-		this.aButtonUp.Y = 5 + 96;
-		this.aButtonUpRight.X = (this.aMapSize * 32) + 15 + 5 + 64;
-		this.aButtonUpRight.Y = 5 + 96;
-		this.aButtonRight.X = (this.aMapSize * 32) + 15 + 5 + 64;
-		this.aButtonRight.Y = 10 + 128;
-		this.aButtonDownRight.X = (this.aMapSize * 32) + 15 + 5 + 64;
-		this.aButtonDownRight.Y = 15 + 160;
-		this.aButtonDown.X = (this.aMapSize * 32) + 10 + 5 + 32;
-		this.aButtonDown.Y = 15 + 160;
-		this.aButtonDownLeft.X = (this.aMapSize * 32) + 5 + 5;
-		this.aButtonDownLeft.Y = 15 + 160;
-		this.aButtonLeft.X = (this.aMapSize * 32) + 5 + 5;
-		this.aButtonLeft.Y = 10 + 128;
-		this.aButtonUpLeft.X = (this.aMapSize * 32) + 5 + 5;
-		this.aButtonUpLeft.Y = 5 + 96;
-		this.aButtonDice.X = (this.aMapSize * 32) + 10 + 5;
-		this.aButtonDice.Y = 20 + 224;
-	}
-
-	get Items()
-	{
-		return this.aItems;
-	}
-
-	mFindPath(pCount)
-	{
-		let vDirrections = 
-		{
-			Up: true,
-			UpRight: true,
-			Right: true,
-			DownRight: true,
-			Down: true,
-			DownLeft: true,
-			Left: true,
-			UpLeft: true
-		};
-		let vResult = 
-		{
-			Max:0,
-			Up: 
-			{ 
-				Count: 0,
-				X: this.aPlayer.X, 
-				Y: this.aPlayer.Y 
-			},
-			UpRight: 
-			{ 
-				Count: 0,
-				X: this.aPlayer.X, 
-				Y: this.aPlayer.Y 
-			},
-			Right: 
-			{ 
-				Count: 0,
-				X: this.aPlayer.X, 
-				Y: this.aPlayer.Y 
-			},
-			DownRight: 
-			{ 
-				Count: 0,
-				X: this.aPlayer.X, 
-				Y: this.aPlayer.Y 
-			},
-			Down: 
-			{ 
-				Count: 0,
-				X: this.aPlayer.X, 
-				Y: this.aPlayer.Y 
-			},
-			DownLeft: 
-			{ 
-				Count: 0,
-				X: this.aPlayer.X, 
-				Y: this.aPlayer.Y 
-			},
-			Left: 
-			{ 
-				Count: 0,
-				X: this.aPlayer.X, 
-				Y: this.aPlayer.Y 
-			},
-			UpLeft: 
-			{ 
-				Count: 0,
-				X: this.aPlayer.X, 
-				Y: this.aPlayer.Y 
-			}
-		}
-		let vTable = new Array();
-		for(let vIndex = 0; vIndex <= pCount; vIndex++)
-		{
-			if
-			(
-				vDirrections.Up 
-				&& 
-				this.aPlayer.Y - vIndex >= 0 
-				&& 
-				this.aMap[this.aPlayer.Y - vIndex][this.aPlayer.X] !== ETileSheetIndex.Wall
-			)
-			{
-				vResult.Up = 
-				{ 
-					Count: vIndex,
-					X: this.aPlayer.X, 
-					Y: this.aPlayer.Y - vIndex
-				}
-			}
-			else if
-			(
-				vDirrections.Up 
-				&& 
-				this.aPlayer.Y - vIndex >= 0 
-				&& 
-				this.aMap[this.aPlayer.Y - vIndex][this.aPlayer.X] === ETileSheetIndex.Wall
-			)
-			{
-				vDirrections.Up = false
-			}
-			if
-			(
-				vDirrections.UpRight 
-				&& 
-				this.aPlayer.X + vIndex < this.aMapSize 
-				&& 
-				this.aPlayer.Y - vIndex >= 0 
-				&& 
-				this.aMap[this.aPlayer.Y - vIndex][this.aPlayer.X + vIndex] !== ETileSheetIndex.Wall
-			)
-			{
-				vResult.UpRight = 
-				{ 
-					Count: vIndex,
-					X: this.aPlayer.X + vIndex,
-					Y: this.aPlayer.Y - vIndex,
-				}
-			}
-			else if
-			(
-				vDirrections.UpRight 
-				&& 
-				this.aPlayer.X + vIndex < this.aMapSize 
-				&& 
-				this.aPlayer.Y - vIndex >= 0 
-				&& 
-				this.aMap[this.aPlayer.Y - vIndex][this.aPlayer.X + vIndex] === ETileSheetIndex.Wall
-			)
-			{
-				vDirrections.UpRight = false;
-			}
-			if
-			(
-				vDirrections.Right
-				&&
-				this.aPlayer.X + vIndex < this.aMapSize
-				&&
-				this.aMap[this.aPlayer.Y][this.aPlayer.X + vIndex] !== ETileSheetIndex.Wall
-			)
-			{
-				vResult.Right = 
-				{
-					Count: vIndex,
-					X: this.aPlayer.X + vIndex,
-					Y: this.aPlayer.Y
-				}
-			}
-			else if
-			(
-				vDirrections.Right
-				&&
-				this.aPlayer.X + vIndex < this.aMapSize
-				&&
-				this.aMap[this.aPlayer.Y][this.aPlayer.X + vIndex] === ETileSheetIndex.Wall
-			)
-			{
-				vDirrections.Right = false;
-			}
-			if
-			(
-				vDirrections.DownRight
-				&&
-				this.aPlayer.X + vIndex < this.aMapSize
-				&&
-				this.aPlayer.Y + vIndex < this.aMapSize
-				&&
-				this.aMap[this.aPlayer.Y + vIndex][this.aPlayer.X + vIndex] !== ETileSheetIndex.Wall
-			)
-			{
-				vResult.DownRight = 
-				{
-					Count: vIndex,
-					X: this.aPlayer.X + vIndex,
-					Y: this.aPlayer.Y + vIndex
-				}
-			}
-			else if
-			(
-				vDirrections.DownRight
-				&&
-				this.aPlayer.X + vIndex < this.aMapSize
-				&&
-				this.aPlayer.Y + vIndex < this.aMapSize
-				&&
-				this.aMap[this.aPlayer.Y + vIndex][this.aPlayer.X + vIndex] === ETileSheetIndex.Wall
-			)
-			{
-				vDirrections.DownRight = false;
-			}
-			if
-			(
-				vDirrections.Down
-				&&
-				this.aPlayer.Y + vIndex < this.aMapSize
-				&&
-				this.aMap[this.aPlayer.Y + vIndex][this.aPlayer.X] !== ETileSheetIndex.Wall
-			)
-			{
-				vResult.Down = 
-				{
-					Count: vIndex,
-					X: this.aPlayer.X,
-					Y: this.aPlayer.Y + vIndex 
-				}
-			}
-			else if
-			(
-				vDirrections.Down
-				&&
-				this.aPlayer.Y + vIndex < this.aMapSize
-				&&
-				this.aMap[this.aPlayer.Y + vIndex][this.aPlayer.X] === ETileSheetIndex.Wall
-			)
-			{
-				vDirrections.Down = false;
-			}
-			if
-			(
-				vDirrections.DownLeft
-				&&
-				this.aPlayer.X - vIndex >= 0
-				&&
-				this.aPlayer.Y + vIndex < this.aMapSize
-				&&
-				this.aMap[this.aPlayer.Y + vIndex][this.aPlayer.X - vIndex] !== ETileSheetIndex.Wall
-			)
-			{
-				vResult.DownLeft = 
-				{
-					Count: vIndex,
-					X: this.aPlayer.X - vIndex,
-					Y: this.aPlayer.Y + vIndex
-				}
-			}
-			else if
-			(
-				vDirrections.DownLeft
-				&&
-				this.aPlayer.X - vIndex >= 0
-				&&
-				this.aPlayer.Y + vIndex < this.aMapSize
-				&&
-				this.aMap[this.aPlayer.Y + vIndex][this.aPlayer.X - vIndex] === ETileSheetIndex.Wall
-			)
-			{
-				vDirrections.DownLeft = false;
-			}
-			if
-			(
-				vDirrections.Left
-				&&
-				this.aPlayer.X - vIndex >= 0
-				&&
-				this.aMap[this.aPlayer.Y][this.aPlayer.X - vIndex] !== ETileSheetIndex.Wall
-			)
-			{
-				vResult.Left = 
-				{
-					Count: vIndex,
-					X: this.aPlayer.X - vIndex,
-					Y: this.aPlayer.Y
-				}
-			}
-			else if
-			(
-				vDirrections.Left
-				&&
-				this.aPlayer.X - vIndex >= 0
-				&&
-				this.aMap[this.aPlayer.Y][this.aPlayer.X - vIndex] === ETileSheetIndex.Wall
-			)
-			{
-				vDirrections.Left = false;
-			}
-			if
-			(
-				vDirrections.UpLeft
-				&&
-				this.aPlayer.X - vIndex >= 0
-				&&
-				this.aPlayer.Y - vIndex >= 0
-				&&
-				this.aMap[this.aPlayer.Y - vIndex][this.aPlayer.X - vIndex] !== ETileSheetIndex.Wall
-			)
-			{
-				vResult.UpLeft = 
-				{
-					Count: vIndex,
-					X: this.aPlayer.X - vIndex,
-					Y: this.aPlayer.Y - vIndex
-				}
-			}
-			else if
-			(
-				vDirrections.UpLeft
-				&&
-				this.aPlayer.X - vIndex >= 0
-				&&
-				this.aPlayer.Y - vIndex >= 0
-				&&
-				this.aMap[this.aPlayer.Y - vIndex][this.aPlayer.X - vIndex] === ETileSheetIndex.Wall
-			)
-			{
-				vDirrections.UpLeft = false;
-			}
-		}
-		vResult.Max = Math.max
-		(
-			vResult.Up.Count, 
-			vResult.UpRight.Count, 
-			vResult.Right.Count, 
-			vResult.DownRight.Count, 
-			vResult.Down.Count,
-			vResult.DownLeft.Count,
-			vResult.Left.Count,
-			vResult.UpLeft.Count
-		);
-
-		return vResult;
+		this.X = (GameEngine.Instance.Canvas.width  - (this.aSize * 32)) / 2;
+		this.Y = (GameEngine.Instance.Canvas.height - (this.aSize * 32)) / 2;
 	}
 
 	mNewLevel(pSeed, pStartPoint, pPercentages)
