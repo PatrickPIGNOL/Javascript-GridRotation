@@ -70,9 +70,6 @@ export class LevelScene extends Scene
 	mOnDrawEventHandler(pCanvas, pGraphicContext)
     {
 		super.mOnDrawEventHandler(pCanvas, pGraphicContext);
-
-		pGraphicContext.fillStyle = pGraphicContext.createPattern(Loader.Images[EImage.MenuBackGround.Index], "repeat");
-        pGraphicContext.fillRect(0, 0, pCanvas.width, pCanvas.height);
 	}
 }
 
