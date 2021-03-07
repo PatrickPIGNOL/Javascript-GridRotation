@@ -1,4 +1,4 @@
-import {MouseFocusable} from "./MouseFocusable.js";
+import {KeyboardFocusable} from "./KeyboardFocusable.js";
 import {GameEngine} from "./GameEngine.js";
 import {Player} from "./Player.js";
 import {EItemType} from "./Item.js";
@@ -7,7 +7,7 @@ import {Automaton} from "./Automaton.js";
 import {EDirrections} from "./EDirrections.js"
 import {GameMapNewMapState} from "./GameMapNewMapState.js"
 
-export class GameMap extends MouseFocusable
+export class GameMap extends KeyboardFocusable
 {
 	constructor(pParent, pWidth, pHeight, pSeed,  pStartPoint)
     {
