@@ -4,10 +4,7 @@ export class Automaton
 	constructor(pState)
 	{
 		this.aState = null;
-		if(pState)
-		{
-			this.aState = pState;
-		}
+		this.mChangeState(pState);
 	}
 	
 	get State()
@@ -34,6 +31,9 @@ export class Automaton
 	mChangeState(pState)
 	{
 		this.aState = pState;
-		this.aState.mReset();
+		if(this.aState)
+		{
+			this.aState.mReset();
+		}
 	}
 }
