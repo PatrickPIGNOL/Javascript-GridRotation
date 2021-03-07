@@ -30,13 +30,9 @@ export class GameMap extends MouseFocusable
 		};
 		this.aAutomaton = new Automaton(GameMapNewMapState.Instance);
 		this.Visible = false;
-		this.aChoosedDirrection = 0;
 		this.aLaunchCount = 0;
-		this.aPaths = null;
-		this.aDiceClicked = false;
-		this.aDiceValue = 6;
 		this.aAlpha;
-		this.aRandom;
+		this.aRandom = null
 		this.aDigCells = new Array();
 		this.mOnResizeEvent();
 		this.aCounts = 
@@ -48,7 +44,6 @@ export class GameMap extends MouseFocusable
 			Dig: Math.floor((this.aMap.Width - 2) * (this.aSize.Height - 2) * this.aPercentages.Dig / 100)
 		};
 		this.aMap = new Array();
-		this.aRandom = null;
 	}
 	
 	get Map()
@@ -63,20 +58,15 @@ export class GameMap extends MouseFocusable
 
 	mOnResizeEventHandler()
 	{
-		this.X = (GameEngine.Instance.Canvas.width  - (this.aSize * 32)) / 2;
-		this.Y = (GameEngine.Instance.Canvas.height - (this.aSize * 32)) / 2;
+		this.X = (GameEngine.Instance.Canvas.width  - (this.aMap.Width * 32)) / 2;
+		this.Y = (GameEngine.Instance.Canvas.height - (this.aMap.Height * 32)) / 2;
 	}
 
 	mNewLevel(pSeed, pStartPoint, pPercentages)
 	{
 		this.aPercentages = 
 		{
-			Dig: 100,
-			Coin: 5,
-			Enemy: 5,
-			Web: 5,
-			Heart: 1.5,
-			Teleport: 1.5
+			Dig: 100
 		};
 		if(pPercentages)
 		{
@@ -85,20 +75,12 @@ export class GameMap extends MouseFocusable
 		
 		this.aCounts = 
 		{
-			Dig: 0,
-			Coin: 0,
-			Chest: 0,
-			Enemy: 0,
-			Tank: 0,
-			Web: 0,
-			Heart: 0,
-			Hearts: 0,
-			Teleport: 0
+			Dig: 0
 		};
 
 		this.aMaxCounts =
 		{
-			Dig: Math.floor((this.aMapSize-2) * (this.aMapSize-2) * this.aPercentages.Dig / 100)
+			Dig: Math.floor((this.aMapSize - 2) * (this.aMapSize - 2) * this.aPercentages.Dig / 100)
 		};
 
 		this.aMap = new Array();
