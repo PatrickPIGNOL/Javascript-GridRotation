@@ -198,7 +198,7 @@ export const EImage = Object.freeze
         {
             Index: 1,
             FileName: "./Images/Mouse.png"
-        }
+        },
         SpriteSheet: 
         {
             Index: 2,
