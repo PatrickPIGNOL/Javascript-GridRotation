@@ -2,16 +2,16 @@ import {EGameMapStateType} from "./EGameMapStateType.js"
 import {State} from "./State.js"
 import {Loader} from "./Loader.js"
 import {EImages} from "./EImages.js"
-export class GameMapViewState extends State
+export class GameMapViewNorthState extends State
 {
 	static aInstance = null;
     static get Instance()
     {
-        if(GameMapViewState.aInstance === null)
+        if(GameMapViewNorthState.aInstance === null)
         {
-            GameMapViewState.aInstance = new GameMapViewState();
+            GameMapViewNorthState.aInstance = new GameMapViewNorthState();
         }
-        return GameMapViewState.aInstance;
+        return GameMapViewNorthState.aInstance;
     }
 	constructor()
 	{
@@ -55,4 +55,4 @@ export class GameMapViewState extends State
 	}
 }
 
-export default {GameMapViewState}
+export default {GameMapViewNorthState: GameMapViewState}

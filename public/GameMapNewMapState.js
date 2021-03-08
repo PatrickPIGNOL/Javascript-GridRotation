@@ -1,6 +1,6 @@
 import {EGameMapStateType} from "./EGameMapStateType.js"
 import {State} from "./State.js"
-import {GameMapViewState} from "./GameMapViewState.js"
+import {GameMapViewNorthState} from "./GameMapViewNorthState.js"
 
 export class GameMapNewMapState extends State
 {
@@ -31,7 +31,7 @@ export class GameMapNewMapState extends State
 	mUpdate(pAutomaton, pObject, pCanvas, pDeltaTime)
 	{
 		pObject.mNewLevel();
-		pAutomaton.mChangeState(GameMapViewState.Instance);
+		pAutomaton.mChangeState(GameMapViewNorthState.Instance);
 	}
 
 	mDraw(pAutomaton, pObject, pCanvas, pGraphicContext)
