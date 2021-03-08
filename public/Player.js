@@ -1,9 +1,6 @@
 import {MouseFocusable} from "./MouseFocusable.js"
 import {Loader, EImage} from "./Loader.js"
-import {EDirrections, GameMap, EGameStates} from "./GameMap.js";
-import {EItemType} from "./Item.js"
-import {GameEngine} from "./GameEngine.js"
-import {IntroScene} from "./IntroScene.js"
+import {EDirrections} from "./GameMap.js";
 import {PlayerStopState} from "./PlayerStopState.js"
 import {PlayerCollectState} from "./PlayerCollectState.js"
 import {PlayerFightState} from "./PlayerFightState.js"
