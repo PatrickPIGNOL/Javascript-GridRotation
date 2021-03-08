@@ -25,6 +25,7 @@ export class GameEngine extends Component
         this.aTimer = 0;
         this.aFPS = 0;
         this.aFPSCounter = 0;
+        this.mAddOnAllEventListener(this);
     }
 
     mOnClickEventHandler(pClickEvent)
