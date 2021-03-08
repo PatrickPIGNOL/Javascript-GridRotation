@@ -83,16 +83,16 @@ export class GameMap extends KeyboardFocusable
 			Dig: Math.floor((this.aMapSize - 2) * (this.aMapSize - 2) * this.aPercentages.Dig / 100)
 		};
 
-		this.aMap = new Array();
+		this.aMap.Map = new Array();
 		
-		for(let vYIndex = 0; vYIndex < this.aMapSize; vYIndex++)
+		for(let vYIndex = 0; vYIndex < this.aMap.Height; vYIndex++)
 		{
 			let vRow = new Array();
-			for(let vXIndex = 0; vXIndex < this.aMapSize; vXIndex++)
+			for(let vXIndex = 0; vXIndex < this.aMap.Width; vXIndex++)
 			{
 					vRow.push(ETileSheetIndex.Wall);
 			}
-			this.aMap.push(vRow);
+			this.aMap.Map.push(vRow);
 		}
 		this.aSeed = window.performance.now();
 		if(pSeed)
@@ -111,10 +111,6 @@ export class GameMap extends KeyboardFocusable
 		}
 		this.aDigCells = new Array();
 		this.mDigMap(this.aStartPoint, 0);
-		this.mNewItems(this.aMaxCounts.Coin, EItemType.Coin);
-		this.mNewItems(this.aMaxCounts.Enemy, EItemType.Enemy);
-		this.mNewItems(this.aMaxCounts.Web, EItemType.Web);
-		this.mNewItems(this.aMaxCounts.Heart, EItemType.Heart);
 		if(!this.aPlayer)
 		{
 			this.aPlayer = new Player(this, this.aStartPoint.X, this.aStartPoint.Y);
@@ -137,36 +133,25 @@ export class GameMap extends KeyboardFocusable
 			vPoint = pPoint;
 		}
 		let vAvailableDirrections = new Array();
-		if(vPoint.Y > 1 && this.aMap[vPoint.Y - 1][vPoint.X] === ETileSheetIndex.Wall)
+		if(vPoint.Y > 1 && this.aMap.Map[vPoint.Y - 1][vPoint.X] === ETileSheetIndex.Wall)
 		{
 			vAvailableDirrections.push(EDirrections.Up);
 		}
-		if(vPoint.X < this.aMapSize - 2 && this.aMap[vPoint.Y][vPoint.X + 1] === ETileSheetIndex.Wall)
+		if(vPoint.X < this.aMap.Width - 2 && this.aMap.Map[vPoint.Y][vPoint.X + 1] === ETileSheetIndex.Wall)
 		{
 			vAvailableDirrections.push(EDirrections.Right)
 		}
-		if(vPoint.Y < this.aMapSize - 2 && this.aMap[vPoint.Y + 1][vPoint.X] === ETileSheetIndex.Wall)
+		if(vPoint.Y < this.aMap.Height - 2 && this.aMap.Map[vPoint.Y + 1][vPoint.X] === ETileSheetIndex.Wall)
 		{
 			vAvailableDirrections.push(EDirrections.Down);
 		}
-		if(vPoint.X > 1 && this.aMap[vPoint.Y][vPoint.X - 1] === ETileSheetIndex.Wall)
+		if(vPoint.X > 1 && this.aMap.Map[vPoint.Y][vPoint.X - 1] === ETileSheetIndex.Wall)
 		{
 			vAvailableDirrections.push(EDirrections.Left);
 		}
 		this.mDigCell(vPoint);
 		this.aCounts.Dig++;
 		
-		if(this.aCounts.Dig >= this.aMaxCounts.Dig)
-		{
-			let vItem = new Item(this, vPoint.X, vPoint.Y, EItemType.Stairs, 0);
-			this.mAddOnAllEventListener(vItem);
-			this.aItems.push(vItem);
-		}
-		else if(vPoint !== this.aStartPoint)
-		{
-			this.aDigCells.push(vPoint);
-		}
-
 		while(vAvailableDirrections.length > 0)
 		{
 			if(this.aCounts.Dig >= this.aMaxCounts.Dig)
