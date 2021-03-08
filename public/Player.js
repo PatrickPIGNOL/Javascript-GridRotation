@@ -91,7 +91,7 @@ export class Player extends MouseFocusable
 	constructor(pParent, pX, pY)
 	{
 		super(pParent, pX, pY, 32, 32)
-		this.aAutomaton = new Automaton(PlayerStopState.Instance);
+		this.aAutomaton = new Automaton(null);
 		this.aLife = 8;
 		this.aCoins = 0;
 		this.aKills = 0;
