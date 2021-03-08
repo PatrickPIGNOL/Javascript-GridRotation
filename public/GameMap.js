@@ -101,8 +101,8 @@ export class GameMap extends KeyboardFocusable
 		}
 		this.aRandom = new Math.seedrandom(this.aSeed);
 		this.aStartPoint = {
-			X: Math.floor(this.aRandom() * this.aMapSize - 2) + 1,
-			Y: Math.floor(this.aRandom() * this.aMapSize - 2) + 1
+			X: Math.floor(this.aRandom() * this.aMap.Width - 2) + 1,
+			Y: Math.floor(this.aRandom() * this.aMap.Height - 2) + 1
 		}
 		
 		if(pStartPoint)
