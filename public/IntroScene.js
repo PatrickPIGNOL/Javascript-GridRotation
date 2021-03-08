@@ -1,9 +1,10 @@
 import {Scene} from "./Scene.js";
 import {Mouse} from "./Mouse.js";
-import {Loader, EImage} from "./Loader.js";
+import {Loader} from "./Loader.js";
 import {GameEngine} from "./GameEngine.js";
 import {EImages} from "./EImages.js"
-const IntroStatus = Object.freeze
+
+export const IntroStatus = Object.freeze
 (
     {
         FadeIn:0,
@@ -12,7 +13,7 @@ const IntroStatus = Object.freeze
     }
 );
 
-class IntroScene extends Scene
+export class IntroScene extends Scene
 {
     static aInstance = null;
     static get Instance()
@@ -122,6 +123,5 @@ class IntroScene extends Scene
         this.aMouse = pEvent;
     }
 }
-export {IntroStatus};
-export {IntroScene};
+
 export default {IntroScene};
