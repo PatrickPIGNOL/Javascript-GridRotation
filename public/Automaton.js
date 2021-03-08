@@ -16,7 +16,7 @@ export class Automaton
 	{
 		if(this.aState)
 		{
-			this.aState.mHandle(this, pObject, pCanvas, pDeltaTime);
+			this.aState.mUpdate(this, pObject, pCanvas, pDeltaTime);
 		}
 	}
 
@@ -24,7 +24,7 @@ export class Automaton
 	{
 		if(this.aState)
 		{
-			this.aState.mHandle(this, pObject, pCanvas, pGraphicContext);
+			this.aState.mDraw(this, pObject, pCanvas, pGraphicContext);
 		}
 	}
 	
