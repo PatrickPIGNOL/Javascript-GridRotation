@@ -130,28 +130,27 @@ export class GameMap extends KeyboardFocusable
 		{
 			vPoint = pPoint;
 		}
-		let vAvailableDirrections = new Array();
-		if(vPoint.Y > 1 && this.aMap.Map[vPoint.Y - 1][vPoint.X] === ETileSheetIndex.Wall)
-		{
-			vAvailableDirrections.push(EDirrections.Up);
-		}
-		if(vPoint.X < this.aMap.Width - 2 && this.aMap.Map[vPoint.Y][vPoint.X + 1] === ETileSheetIndex.Wall)
-		{
-			vAvailableDirrections.push(EDirrections.Right)
-		}
-		if(vPoint.Y < this.aMap.Height - 2 && this.aMap.Map[vPoint.Y + 1][vPoint.X] === ETileSheetIndex.Wall)
-		{
-			vAvailableDirrections.push(EDirrections.Down);
-		}
-		if(vPoint.X > 1 && this.aMap.Map[vPoint.Y][vPoint.X - 1] === ETileSheetIndex.Wall)
-		{
-			vAvailableDirrections.push(EDirrections.Left);
-		}
 		this.mDigCell(vPoint);
-		this.aCounts.Dig++;
-		
-		while(vAvailableDirrections.length > 0)
+		this.aCounts.Dig++;		
+		do
 		{
+			let vAvailableDirrections = new Array();
+			if(vPoint.Y > 1 && this.aMap.Map[vPoint.Y - 1][vPoint.X] === ETileSheetIndex.Wall)
+			{
+				vAvailableDirrections.push(EDirrections.Up);
+			}
+			if(vPoint.X < this.aMapSize - 2 && this.aMap[vPoint.Y][vPoint.X + 1] === ETileSheetIndex.Wall)
+			{
+				vAvailableDirrections.push(EDirrections.Right)
+			}
+			if(vPoint.Y < this.aMapSize - 2 && this.aMap[vPoint.Y + 1][vPoint.X] === ETileSheetIndex.Wall)
+			{
+				vAvailableDirrections.push(EDirrections.Down);
+			}
+			if(vPoint.X > 1 && this.aMap.Map[vPoint.Y][vPoint.X - 1] === ETileSheetIndex.Wall)
+			{
+				vAvailableDirrections.push(EDirrections.Left);
+			}
 			if(this.aCounts.Dig >= this.aMaxCounts.Dig)
 			{
 				break;
@@ -180,24 +179,7 @@ export class GameMap extends KeyboardFocusable
 					}break;
 				}
 			}
-			vAvailableDirrections = new Array();
-			if(vPoint.Y > 1 && this.aMap.Map[vPoint.Y - 1][vPoint.X] === ETileSheetIndex.Wall)
-			{
-				vAvailableDirrections.push(EDirrections.Up);
-			}
-			if(vPoint.X < this.aMapSize - 2 && this.aMap[vPoint.Y][vPoint.X + 1] === ETileSheetIndex.Wall)
-			{
-				vAvailableDirrections.push(EDirrections.Right)
-			}
-			if(vPoint.Y < this.aMapSize - 2 && this.aMap[vPoint.Y + 1][vPoint.X] === ETileSheetIndex.Wall)
-			{
-				vAvailableDirrections.push(EDirrections.Down);
-			}
-			if(vPoint.X > 1 && this.aMap.Map[vPoint.Y][vPoint.X - 1] === ETileSheetIndex.Wall)
-			{
-				vAvailableDirrections.push(EDirrections.Left);
-			}
-		}
+		}while(vAvailableDirrections.length > 0);
 	}
 
 	mDigCell(pPoint)
