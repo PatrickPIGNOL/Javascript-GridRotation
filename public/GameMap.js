@@ -137,19 +137,19 @@ export class GameMap extends KeyboardFocusable
 			let vAvailableDirrections = new Array();
 			if(vPoint.Y > 1 && this.aMap.Map[vPoint.Y - 1][vPoint.X] === ETileSheetIndex.Wall)
 			{
-				vAvailableDirrections.push(EDirrections.Up);
+				vAvailableDirrections.push(EDirrections.North);
 			}
 			if(vPoint.X < this.aMapSize - 2 && this.aMap[vPoint.Y][vPoint.X + 1] === ETileSheetIndex.Wall)
 			{
-				vAvailableDirrections.push(EDirrections.Right)
+				vAvailableDirrections.push(EDirrections.East)
 			}
 			if(vPoint.Y < this.aMapSize - 2 && this.aMap[vPoint.Y + 1][vPoint.X] === ETileSheetIndex.Wall)
 			{
-				vAvailableDirrections.push(EDirrections.Down);
+				vAvailableDirrections.push(EDirrections.South);
 			}
 			if(vPoint.X > 1 && this.aMap.Map[vPoint.Y][vPoint.X - 1] === ETileSheetIndex.Wall)
 			{
-				vAvailableDirrections.push(EDirrections.Left);
+				vAvailableDirrections.push(EDirrections.West);
 			}
 			if(this.aCounts.Dig >= this.aMaxCounts.Dig)
 			{
@@ -161,19 +161,19 @@ export class GameMap extends KeyboardFocusable
 				let vDirrection = vAvailableDirrections[vRandom];
 				switch(vDirrection)
 				{
-					case EDirrections.Up:
+					case EDirrections.North:
 					{
 						this.mDigMap({X: vPoint.X, Y: vPoint.Y - 1});
 					}break;
-					case EDirrections.Right:
+					case EDirrections.East:
 					{
 						this.mDigMap({X: vPoint.X + 1, Y: vPoint.Y});
 					}break;
-					case EDirrections.Down:
+					case EDirrections.South:
 					{
 						this.mDigMap({X: vPoint.X, Y: vPoint.Y + 1});
 					}break;
-					case EDirrections.Left:
+					case EDirrections.West:
 					{
 						this.mDigMap({X: vPoint.X - 1, Y: vPoint.Y});
 					}break;
