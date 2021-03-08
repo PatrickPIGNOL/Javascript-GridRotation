@@ -1,7 +1,14 @@
 export const EGameMapStateType = Object.freeze
 (
     {
-        NewMap: 1,
-		View: 2
+		ViewNorth: 1,
+		ViewNorthEast: 3,
+		ViewEast: 2,
+		ViewSouthEast: 6,
+		ViewSouth: 4,
+		ViewSouthWest: 12,
+		ViewWest: 8,
+		ViewNorthWest: 9,
+        NewMap: 16,
 	}
-)
+);
