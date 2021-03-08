@@ -12,3 +12,5 @@ export const EGameMapStateType = Object.freeze
         NewMap: 16,
 	}
 );
+
+export default {EGameMapStateType};
