@@ -55,4 +55,4 @@ export class GameMapViewNorthState extends State
 	}
 }
 
-export default {GameMapViewNorthState: GameMapViewState}
+export default {GameMapViewNorthState}
