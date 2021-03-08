@@ -18,6 +18,7 @@ export class GameMap extends KeyboardFocusable
 			pWidth * 32, 
 			pHeight * 32
 		);
+		this.mAddOnAllEventListener(this);
 		this.aMap = {
 			Map: new Array(),
 			Width: pWidth,
