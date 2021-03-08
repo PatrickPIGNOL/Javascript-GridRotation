@@ -100,7 +100,7 @@ export class Player extends MouseFocusable
 		this.aDirrection = EPlayerDirrections.S;
 		this.aTimer = 0;
 		this.aAnimationTimer = 0;
-		this.aAutomaton.mChangeState(PlayerStopState.Instance);
+		this.aAutomaton.mChangeState(null);
 		this.aImageIndex = 0;
 		this.aPath = null;
 	}
