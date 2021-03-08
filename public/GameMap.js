@@ -43,7 +43,6 @@ export class GameMap extends KeyboardFocusable
 		{
 			Dig: Math.floor((this.aMap.Width - 2) * (this.aMap.Height - 2) * this.aPercentages.Dig / 100)
 		};
-		this.aMap = new Array();
 	}
 	
 	get Map()
@@ -109,7 +108,6 @@ export class GameMap extends KeyboardFocusable
 		{
 			this.aStartPoint = pStartPoint;
 		}
-		this.aDigCells = new Array();
 		this.mDigMap(this.aStartPoint, 0);
 		if(!this.aPlayer)
 		{
