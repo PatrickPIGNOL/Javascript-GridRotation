@@ -2,6 +2,7 @@ import {Scene} from "./Scene.js";
 import {Mouse} from "./Mouse.js";
 import {Loader, EImage} from "./Loader.js";
 import {GameEngine} from "./GameEngine.js";
+import {EImages} from "./EImages.js"
 const IntroStatus = Object.freeze
 (
     {
@@ -91,7 +92,7 @@ class IntroScene extends Scene
         let vWidth = 0;
         let vHeight = 0;
         let vCoef = 0;
-        const vLogo = Loader.Images[EImage.Logo.Index];
+        const vLogo = Loader.Images[EImages.Logo.Index];
         if(pCanvas.width > pCanvas.height)
         {
             vCoef = (pCanvas.height * 0.8) / vLogo.height;
