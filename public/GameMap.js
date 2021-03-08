@@ -198,7 +198,7 @@ export class GameMap extends KeyboardFocusable
 				}
 			}
 			vAvailableDirrections = new Array();
-			if(vPoint.Y > 1 && this.aMap[vPoint.Y - 1][vPoint.X] === ETileSheetIndex.Wall)
+			if(vPoint.Y > 1 && this.aMap.Map[vPoint.Y - 1][vPoint.X] === ETileSheetIndex.Wall)
 			{
 				vAvailableDirrections.push(EDirrections.Up);
 			}
@@ -210,7 +210,7 @@ export class GameMap extends KeyboardFocusable
 			{
 				vAvailableDirrections.push(EDirrections.Down);
 			}
-			if(vPoint.X > 1 && this.aMap[vPoint.Y][vPoint.X - 1] === ETileSheetIndex.Wall)
+			if(vPoint.X > 1 && this.aMap.Map[vPoint.Y][vPoint.X - 1] === ETileSheetIndex.Wall)
 			{
 				vAvailableDirrections.push(EDirrections.Left);
 			}
@@ -219,7 +219,7 @@ export class GameMap extends KeyboardFocusable
 
 	mDigCell(pPoint)
 	{
-		this.aMap[pPoint.Y][pPoint.X] = ETileSheetIndex.Floor;
+		this.aMap.Map[pPoint.Y][pPoint.X] = ETileSheetIndex.Floor;
 	}
 
 	mOnUpdateEventHandler(pCanvas, pDeltaTime)
