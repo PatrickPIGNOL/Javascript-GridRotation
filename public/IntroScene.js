@@ -3,6 +3,7 @@ import {Mouse} from "./Mouse.js";
 import {Loader} from "./Loader.js";
 import {GameEngine} from "./GameEngine.js";
 import {EImages} from "./EImages.js"
+import {LevelScene} from "./LevelScene.js"
 
 export const IntroStatus = Object.freeze
 (
