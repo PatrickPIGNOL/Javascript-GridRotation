@@ -1,4 +1,4 @@
-class Exception extends Error
+export class Exception extends Error
 {
 	constructor(pMessage = "", pFileName = null, pLineNumber = null, pPrevious = null)
 	{
