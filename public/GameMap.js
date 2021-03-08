@@ -1,7 +1,6 @@
 import {KeyboardFocusable} from "./KeyboardFocusable.js";
 import {GameEngine} from "./GameEngine.js";
 import {Player} from "./Player.js";
-import {EItemType} from "./Item.js";
 import {ETileSheetIndex} from "./ETileSheetIndex.js";
 import {Automaton} from "./Automaton.js";
 import {EDirrections} from "./EDirrections.js"
