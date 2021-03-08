@@ -7,6 +7,7 @@ export class Scene extends KeyboardFocusable
         super(null, 0, 0, 0, 0);
         this.Visible = true;
         this.MouseFocusable = true;
+        this.mAddOnAllEventListener(this);
     }
     mOnUpdateEventHandler(pCanvas, pDeltaTime)
     {
