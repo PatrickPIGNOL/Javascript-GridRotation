@@ -132,6 +132,7 @@ export class GameMap extends KeyboardFocusable
 		}
 		this.mDigCell(vPoint);
 		this.aCounts.Dig++;		
+		let vAvailableDirrections = new Array();
 		do
 		{
 			let vAvailableDirrections = new Array();
