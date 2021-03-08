@@ -40,7 +40,7 @@ export class GameMap extends KeyboardFocusable
 		};
 		this.aMaxCounts =
 		{
-			Dig: Math.floor((this.aMap.Width - 2) * (this.aSize.Height - 2) * this.aPercentages.Dig / 100)
+			Dig: Math.floor((this.aMap.Width - 2) * (this.aMap.Height - 2) * this.aPercentages.Dig / 100)
 		};
 		this.aMap = new Array();
 	}
