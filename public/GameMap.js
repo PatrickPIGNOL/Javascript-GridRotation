@@ -135,7 +135,7 @@ export class GameMap extends KeyboardFocusable
 		let vAvailableDirrections = new Array();
 		do
 		{
-			let vAvailableDirrections = new Array();
+			vAvailableDirrections = new Array();
 			if(vPoint.Y > 1 && this.aMap.Map[vPoint.Y - 1][vPoint.X] === ETileSheetIndex.Wall)
 			{
 				vAvailableDirrections.push(EDirrections.North);
